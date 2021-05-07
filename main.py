@@ -16,7 +16,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
 
 
-        self.setWindowIcon(QtGui.QIcon("src/iconORCD.png"))
+        self.setWindowIcon(QtGui.QIcon("src/LogoIcon.png"))
 
         #Устанавливает в виджетах ввода даты сегодняшнею дату
         self.LimitDate.setDate(datetime.date.today())
@@ -127,11 +127,11 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         if Period=="OneTime":
             #Из полученных данных создаем diсt
             NewPlan =  {
-                "Date": Date.strftime("datetime.date(%Y, %d, %m)"),
-                "Time": Time.strftime("%H:%M"), #datetime.time(2, 36, 25, 851000)
+                "Date": Date,
+                "Time": Time, #datetime.time(2, 36, 25, 851000)
                 "Importance":Importance,
                 "Period":Period,
-                "StopPeriod":StopPeriod.strftime("datetime.date(%Y, %d, %m)"),
+                "StopPeriod":StopPeriod,
                 "Text":Text
             }
 
@@ -143,11 +143,11 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
             for i in times:
                 # Из полученных данных создаем diсt
                 NewPlan = {
-                    "Date": i.strftime("datetime.date(%Y, %d, %m)"),
-                    "Time": Time.strftime("%H:%M"),  # datetime.time(2, 36, 25, 851000)
+                    "Date": i,
+                    "Time": Time,  # datetime.time(2, 36, 25, 851000)
                     "Importance": Importance,
                     "Period": Period,
-                    "StopPeriod": StopPeriod.strftime("datetime.date(%Y, %d, %m)"),
+                    "StopPeriod": StopPeriod,
                     "Text": Text
                 }
 
@@ -173,6 +173,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
     def View_Plans(self):
         t = self.calendarWidget.selectedDate().toPyDate()
+
         self.listWidget.clear()
         global arrPlans
         l =len(arrPlans)
@@ -182,22 +183,22 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
 
         for i in range(0, l):
-            if t.strftime("datetime.date(%Y, %d, %m)") == arrPlans[i]["Date"]:
+            if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "LotWarring":
-                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"] + " " + arrPlans[i]["Text"])
+                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/lot.svg"))
                     self.listWidget.addItem(item)
 
         for i in range(0,l):
-            if t.strftime("datetime.date(%Y, %d, %m)") == arrPlans[i]["Date"]:
+            if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "MiddleWarring":
-                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"] + " " + arrPlans[i]["Text"])
+                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/middle.svg"))
                     self.listWidget.addItem(item)
         for i in range(0,l):
-            if t.strftime("datetime.date(%Y, %d, %m)") == arrPlans[i]["Date"]:
+            if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "LowWarring":
-                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"] + " " + arrPlans[i]["Text"])
+                    item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/low.svg"))
                     self.listWidget.addItem(item)
 

@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Список задач"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "LOTKA"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Укажите дату:"))
         self.groupBox.setTitle(_translate("MainWindow", "Укажите важность:"))
         self.radioButtonNoWarring.setText(_translate("MainWindow", "Не важно"))
