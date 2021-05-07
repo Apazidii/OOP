@@ -9,6 +9,6 @@ class Plan:
         self.Text = Text
 
     def toJSON(self):
-        with open("testjson.json", "a",encoding="utf-8") as write_file:
+        with open("saves/testjson.json", "a", encoding="utf-8") as write_file:
             json.dump(eval(json.dumps(self, default=lambda o: o.__dict__,
                                       sort_keys=True, indent=4),), write_file)

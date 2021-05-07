@@ -1,22 +1,30 @@
-import json
-import classes
-class J:
-    name = "alex"
-    age =18
-    sex = "man"
-    def __init__(self, name,age,sex):
-        self.name = name
-        self.age = age
-        self.sex = sex
+import datetime
 
-    def toJSON(self):
+import calendar
 
-        with open("testjson.json", "a") as write_file:
-            json.dump(eval (json.dumps(self, default=lambda o: o.__dict__,
-            sort_keys=True, indent=4)), write_file)
+def Periods(a,b,period):
+
+    def add_months(sourcedate, months):
+        month = sourcedate.month - 1 + months
+        year = sourcedate.year + month // 12
+        month = month % 12 + 1
+        day = min(sourcedate.day, calendar.monthrange(year,month)[1])
+        return datetime.date(year, month, day)
 
 
-pla.toJSON()
+
+
+    k = a
+    res = []
+    while k<=b:
+        res.append(k)
+        if period =="EveryDay":
+            k = k+datetime.timedelta(days=1)
+        elif period =="EveryWeek":
+            k = k + datetime.timedelta(weeks=1)
+        elif period =="EveryMouth":
+            k = add_months(k,1)
+    return res
 
 
 
