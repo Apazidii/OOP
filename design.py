@@ -123,19 +123,22 @@ class Ui_MainWindow(object):
         self.Load.setObjectName("Load")
         self.Save = QtWidgets.QAction(MainWindow)
         self.Save.setObjectName("Save")
-        self.action_3 = QtWidgets.QAction(MainWindow)
-        self.action_3.setObjectName("action_3")
+        self.SaveAs = QtWidgets.QAction(MainWindow)
+        self.SaveAs.setObjectName("SaveAs")
         self.menu.addAction(self.Load)
         self.menu.addAction(self.Save)
+        self.menu.addAction(self.SaveAs)
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Список задач"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Укажите дату:"))
         self.groupBox.setTitle(_translate("MainWindow", "Укажите важность:"))
         self.radioButtonNoWarring.setText(_translate("MainWindow", "Не важно"))
@@ -155,4 +158,4 @@ class Ui_MainWindow(object):
         self.menu.setTitle(_translate("MainWindow", "Файл"))
         self.Load.setText(_translate("MainWindow", "Загрузить"))
         self.Save.setText(_translate("MainWindow", "Сохранить"))
-        self.action_3.setText(_translate("MainWindow", "Сохранить как"))
+        self.SaveAs.setText(_translate("MainWindow", "Сохранить как"))
