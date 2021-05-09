@@ -111,7 +111,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.tabWidget, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -123,22 +123,26 @@ class Ui_MainWindow(object):
         self.Load.setObjectName("Load")
         self.Save = QtWidgets.QAction(MainWindow)
         self.Save.setObjectName("Save")
+        self.action_3 = QtWidgets.QAction(MainWindow)
+        self.action_3.setObjectName("action_3")
         self.SaveAs = QtWidgets.QAction(MainWindow)
         self.SaveAs.setObjectName("SaveAs")
+        self.Create = QtWidgets.QAction(MainWindow)
+        self.Create.setObjectName("Create")
+        self.menu.addAction(self.Create)
         self.menu.addAction(self.Load)
         self.menu.addAction(self.Save)
         self.menu.addAction(self.SaveAs)
+        self.menu.addSeparator()
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "LOTKA"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "LOTKA"+"   -   "+"Новый список задач*"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Укажите дату:"))
         self.groupBox.setTitle(_translate("MainWindow", "Укажите важность:"))
         self.radioButtonNoWarring.setText(_translate("MainWindow", "Не важно"))
@@ -158,4 +162,6 @@ class Ui_MainWindow(object):
         self.menu.setTitle(_translate("MainWindow", "Файл"))
         self.Load.setText(_translate("MainWindow", "Загрузить"))
         self.Save.setText(_translate("MainWindow", "Сохранить"))
+        self.action_3.setText(_translate("MainWindow", "Сохранить как"))
         self.SaveAs.setText(_translate("MainWindow", "Сохранить как"))
+        self.Create.setText(_translate("MainWindow", "Создать"))

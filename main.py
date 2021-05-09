@@ -26,6 +26,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.groupBox_3.setVisible(False)
 
         self.CreateButton.clicked.connect(self.New_Plan)
+        self.Create.triggered.connect(self.CreateProject)
         self.SaveAs.triggered.connect(self.SaveAs_File)
         self.Save.triggered.connect(self.Save_File)
         self.Load.triggered.connect(self.Load_File)
@@ -47,13 +48,23 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def LimitTVisible(self):
         self.groupBox_3.setVisible(True)
 
+    def CreateProject(self):
+        self.statusbar.showMessage("Создан новый список задач")
+        self.setWindowTitle(self.windowTitle().split("   -   ")[0]+"   -   "+"Новый список задач*")
+        global arrPlans
+        arrPlans.clear()
+
+
+
     def Load_File(self):
 
         directory = QtWidgets.QFileDialog.getOpenFileName(self,"Выберите файл",filter="*.apaz")
 
-        self.setWindowTitle(self.windowTitle() +"   -   "+Name_From_Url(directory[0]))
+        self.setWindowTitle(self.windowTitle().split("   -   ")[0] +"   -   "+Name_From_Url(directory[0]))
         global urlFile
         urlFile = directory[0]
+
+        self.statusbar.showMessage("Список задач загружен")
 
         global arrPlans
         arrPlans = LoadFile(urlFile).copy()
@@ -61,9 +72,11 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
     def SaveAs_File(self):
         directory = QtWidgets.QFileDialog.getSaveFileName(self,"Выберите файл для сохранения",filter="*.apaz")
-        self.setWindowTitle(self.windowTitle() + "   -   " + Name_From_Url(directory[0]))
+        self.setWindowTitle(self.windowTitle().split("   -   ")[0] +"   -   "+Name_From_Url(directory[0]))
         global urlFile
         urlFile = directory[0]
+
+        self.statusbar.showMessage("Список задач сохранен")
 
         SaveFile(urlFile, arrPlans)
         self.setWindowTitle(self.windowTitle()[:-1])
@@ -73,14 +86,17 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         global urlFile
         if urlFile =="":
             directory = QtWidgets.QFileDialog.getSaveFileName(self, "Выберите файл для сохранения", filter="*.apaz")
-            self.setWindowTitle(self.windowTitle() + "   -   " + Name_From_Url(directory[0]))
+            self.setWindowTitle(self.windowTitle().split("   -   ")[0] + "   -   " + Name_From_Url(directory[0]))
 
             urlFile = directory[0]
+
+            self.statusbar.showMessage("Список задач сохранен")
 
             SaveFile(urlFile, arrPlans)
             if self.windowTitle()[-1:] == "*":
                 self.setWindowTitle(self.windowTitle()[:-1])
         else:
+            self.statusbar.showMessage("Список задач сохранен")
             SaveFile(urlFile, arrPlans)
             if self.windowTitle()[-1:] == "*":
                 self.setWindowTitle(self.windowTitle()[:-1])
@@ -107,16 +123,12 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         #Получаем данные о периоде напоминаний
         Period = "OneTime"
         if self.RButtonEveryDay.isChecked():
-            self.LimitDate.setVisible(True)
             Period= "EveryDay"
         elif self.RButtonEveryWeek.isChecked():
-            self.LimitDate.setVisible(True)
             Period = "EveryWeek"
         elif self.RButtonEveryMouth.isChecked():
-            self.LimitDate.setVisible(True)
             Period = "EveryMouth"
         elif self.RButtonOneTime.isChecked():
-            self.LimitDate.setVisible(False)
             Period = "OneTime"
 
         #Получаем данные о времени окончание повторения заметок
@@ -154,7 +166,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 # Добавляем dict-план в общий массив сохранения
                 arrPlans.append(NewPlan)
 
-
+        self.statusbar.showMessage("Задача добавлена")
 
         #отчищаем все поля
         self.NewText.clear()
@@ -165,7 +177,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.InputDate.setDateTime(datetime.datetime.today())
 
         #Добавляем индикатор несохраненого файла ("*" в оглавление после названия файла)
-        if self.windowTitle()[-1:]=="*":
+        if self.windowTitle()[-1:]!="*":
             self.setWindowTitle(self.windowTitle() + "*")
 
 

@@ -21,7 +21,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="New">
        <attribute name="title">
@@ -186,15 +186,18 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>Файл</string>
     </property>
+    <addaction name="Create"/>
     <addaction name="Load"/>
     <addaction name="Save"/>
+    <addaction name="SaveAs"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -212,6 +215,16 @@
   <action name="action_3">
    <property name="text">
     <string>Сохранить как</string>
+   </property>
+  </action>
+  <action name="SaveAs">
+   <property name="text">
+    <string>Сохранить как</string>
+   </property>
+  </action>
+  <action name="Create">
+   <property name="text">
+    <string>Создать</string>
    </property>
   </action>
  </widget>
