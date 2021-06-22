@@ -28,11 +28,12 @@ def Periods(a,b,period):
 
 
 
-def SaveFile(FilePath,ArrPlans):
+def SaveFile(FilePath,ArrPlans, ID):
     f = open(FilePath,"w",encoding="utf-8")
 
     ArrPlans = str(ArrPlans).replace("'",'"')
     ArrPlans = ArrPlans.replace("}, {","},\n{")
+    f.write(str(ID)+"&"+"\n")
     f.write(str(ArrPlans))
     f.close()
 
@@ -41,9 +42,15 @@ def SaveFile(FilePath,ArrPlans):
 def LoadFile(FilePath):
     f = open(FilePath,"r",encoding="utf-8")
 
+
+
     arr = f.read()
+    id = arr[: arr.find("&") ]
+
+    arr = arr[arr.find("&") + 1:]
+
     arr = arr.replace("},\n{","}, {")
-    return eval(arr)
+    return int(id),eval(arr)
 
 
 def Name_From_Url(s):

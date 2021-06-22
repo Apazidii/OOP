@@ -1,10 +1,17 @@
 import sys  # sys нужен для передачи argv в QApplication
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtGui
 from fromFile import *
 import design  # Это наш конвертированный файл дизайна
 
+
 arrPlans = []
+arrView  = []
 urlFile = ""
+NextID = 0
+
+
+
+
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
@@ -14,6 +21,10 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
 
 
+
+
+
+        #self.groupBox.setStyleSheet("border-radius: 3px")
 
 
         self.setWindowIcon(QtGui.QIcon("src/LogoIcon.png"))
@@ -26,10 +37,10 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.groupBox_3.setVisible(False)
 
         self.CreateButton.clicked.connect(self.New_Plan)
-        self.Create.triggered.connect(self.CreateProject)
+        self.Create.triggered.connect( self.CreateProject)
         self.SaveAs.triggered.connect(self.SaveAs_File)
         self.Save.triggered.connect(self.Save_File)
-        self.Load.triggered.connect(self.Load_File)
+        self.Load.triggered.connect(self.Load_File )#Load_File)
         self.ViewButton.clicked.connect(self.View_Plans)
 
     # Проверка на периодичность
@@ -38,6 +49,14 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.RButtonEveryDay.clicked.connect(self.LimitTVisible)
         self.RButtonEveryMouth.clicked.connect(self.LimitTVisible)
         self.RButtonEveryWeek.clicked.connect(self.LimitTVisible)
+
+        self.toolButton.clicked.connect(self.DeletePlan)
+
+
+
+
+
+
 
 
     # Делает контейнер с датой окончание видимым
@@ -48,11 +67,28 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def LimitTVisible(self):
         self.groupBox_3.setVisible(True)
 
+    def test(self):
+        print(123)
+
     def CreateProject(self):
         self.statusbar.showMessage("Создан новый список задач")
         self.setWindowTitle(self.windowTitle().split("   -   ")[0]+"   -   "+"Новый список задач*")
+        #отчищаем все поля
+        self.NewText.clear()
+        self.groupBox_3.setVisible(False)
+        self.RButtonOneTime.setChecked(True)
+        self.radioButtonNoWarring.setChecked(True)
+        self.LimitDate.setDate(datetime.date.today())
+        self.InputDate.setDateTime(datetime.datetime.today())
+
+        #Добавляем индикатор несохраненого файла ("*" в оглавление после названия файла)
+        if self.windowTitle()[-1:]!="*":
+            self.setWindowTitle(self.windowTitle() + "*")
+
         global arrPlans
         arrPlans.clear()
+        global NextID
+        NextID = 0
 
 
 
@@ -66,8 +102,13 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
         self.statusbar.showMessage("Список задач загружен")
 
+        lID, lArr = LoadFile(urlFile)
+
         global arrPlans
-        arrPlans = LoadFile(urlFile).copy()
+
+        global NextID
+        NextID = lID
+        arrPlans = lArr.copy()
 
 
     def SaveAs_File(self):
@@ -77,13 +118,14 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         urlFile = directory[0]
 
         self.statusbar.showMessage("Список задач сохранен")
-
-        SaveFile(urlFile, arrPlans)
+        global NextID
+        SaveFile(urlFile, arrPlans, NextID)
         self.setWindowTitle(self.windowTitle()[:-1])
 
     def Save_File(self):
 
         global urlFile
+        global NextID
         if urlFile =="":
             directory = QtWidgets.QFileDialog.getSaveFileName(self, "Выберите файл для сохранения", filter="*.apaz")
             self.setWindowTitle(self.windowTitle().split("   -   ")[0] + "   -   " + Name_From_Url(directory[0]))
@@ -92,12 +134,12 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
             self.statusbar.showMessage("Список задач сохранен")
 
-            SaveFile(urlFile, arrPlans)
+            SaveFile(urlFile, arrPlans,NextID)
             if self.windowTitle()[-1:] == "*":
                 self.setWindowTitle(self.windowTitle()[:-1])
         else:
             self.statusbar.showMessage("Список задач сохранен")
-            SaveFile(urlFile, arrPlans)
+            SaveFile(urlFile, arrPlans,NextID)
             if self.windowTitle()[-1:] == "*":
                 self.setWindowTitle(self.windowTitle()[:-1])
 
@@ -136,6 +178,9 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         #Получаем описание заметки
         Text = self.NewText.toPlainText()
 
+        #Получаем ID
+        global NextID
+
         if Period=="OneTime":
             #Из полученных данных создаем diсt
             NewPlan =  {
@@ -144,8 +189,11 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                 "Importance":Importance,
                 "Period":Period,
                 "StopPeriod":StopPeriod,
-                "Text":Text
+                "Text":Text,
+                "ID":NextID
             }
+            NextID += 1
+
 
             #Добавляем dict-план в общий массив сохранения
             arrPlans.append(NewPlan)
@@ -160,9 +208,10 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
                     "Importance": Importance,
                     "Period": Period,
                     "StopPeriod": StopPeriod,
-                    "Text": Text
+                    "Text": Text,
+                    "ID":NextID
                 }
-
+                NextID += 1
                 # Добавляем dict-план в общий массив сохранения
                 arrPlans.append(NewPlan)
 
@@ -191,28 +240,60 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         l =len(arrPlans)
         arrPlans = sorted(arrPlans, key=lambda arrPlans: arrPlans["Time"])
 
-
-
+        global arrView
+        arrView.clear()
 
         for i in range(0, l):
             if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "LotWarring":
                     item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/lot.svg"))
-                    self.listWidget.addItem(item)
-
+                    arrView.append([item,arrPlans[i]["ID"]])
         for i in range(0,l):
             if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "MiddleWarring":
                     item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/middle.svg"))
-                    self.listWidget.addItem(item)
+                    arrView.append([item,arrPlans[i]["ID"]])
         for i in range(0,l):
             if t == arrPlans[i]["Date"]:
                 if arrPlans[i]["Importance"] == "LowWarring":
                     item = QtWidgets.QListWidgetItem(arrPlans[i]["Time"].strftime("%H:%M") + " " + arrPlans[i]["Text"])
                     item.setIcon(QtGui.QIcon("src/low.svg"))
-                    self.listWidget.addItem(item)
+                    arrView.append([item,arrPlans[i]["ID"]])
+
+
+        for i in range(0, len(arrView)):
+            self.listWidget.addItem(arrView[i][0])
+
+    
+
+    def DeletePlan(self):
+        global arrPlans
+        global arrView
+        k = self.listWidget.currentRow()
+        DelID = arrView[k][1]
+        l = len(arrPlans)
+        for i in range(0,l):
+            if arrPlans[i]["ID"]==DelID:
+                arrPlans.pop(i)
+                break
+
+        self.statusbar.showMessage("Задача удалена")
+
+
+        self.View_Plans()
+
+
+
+
+
+        # Добавляем индикатор несохраненого файла ("*" в оглавление после названия файла)
+        if self.windowTitle()[-1:] != "*":
+            self.setWindowTitle(self.windowTitle() + "*")
+
+
+
 
 
 

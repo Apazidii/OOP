@@ -1,2 +1,0 @@
-[{"Date": datetime.date(2021, 5, 7), "Time": datetime.time(9, 52, 40, 958000), "Importance": "LowWarring", "Period": "OneTime", "StopPeriod": datetime.date(2021, 5, 7), "Text": "awdawdawd"},
-{"Date": datetime.date(2021, 5, 9), "Time": datetime.time(18, 12, 14, 245000), "Importance": "LowWarring", "Period": "OneTime", "StopPeriod": datetime.date(2021, 5, 9), "Text": "qwe"}]

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>361</height>
+    <width>919</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="New">
        <attribute name="title">
@@ -51,23 +51,9 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <widget class="QRadioButton" name="radioButtonNoWarring">
+                <widget class="QLabel" name="label">
                  <property name="text">
-                  <string>Не важно</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonMiddle">
-                 <property name="text">
-                  <string>Обычно</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonWarring">
-                 <property name="text">
-                  <string>Важно</string>
+                  <string>TextLabel</string>
                  </property>
                 </widget>
                </item>
@@ -213,7 +199,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>748</width>
+     <width>919</width>
      <height>21</height>
     </rect>
    </property>
